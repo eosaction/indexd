@@ -313,9 +313,14 @@ Blockchain.prototype.txoByTxo = function (txId, vout, callback) {
 
 Blockchain.prototype.addToLabel = function (scId, label, callback) {
    let atomic = this.db.atomic()
-   //atomic.del(types.lbIndex, { scId, label })
    atomic.put(types.lbIndex, { label, scId }, null)
    atomic.write(callback)
+}
+
+Blockchain.prototype.delFromLabel = function (scId, label, callback) {
+  let atomic = this.db.atomic()
+  atomic.del(types.lbIndex, { label, scId })
+  atomic.write(callback)
 }
 
 module.exports = Blockchain

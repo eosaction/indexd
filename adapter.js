@@ -161,6 +161,10 @@ Adapter.prototype.addToLabel = function (scId, label, callback) {
   this.blockchain.addToLabel(scId, label, callback)
 }
 
+Adapter.prototype.delFromLabel = function (scId, label, callback) {
+  this.blockchain.delFromLabel(scId, label, callback)
+}
+
 module.exports = function makeAdapter (db, rpc) {
   return new Adapter(db, rpc)
 }
