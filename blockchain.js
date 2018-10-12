@@ -196,6 +196,7 @@ Blockchain.prototype.fees = function (n, callback) {
 }
 
 let ZERO64 = '0000000000000000000000000000000000000000000000000000000000000000'
+let MAX64 = 'ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff'
 Blockchain.prototype.seenScriptId = function (scId, callback) {
   let result = false
 
@@ -293,15 +294,27 @@ Blockchain.prototype.txosByScriptId = function (scId, height, callback, limit) {
   }, (err) => callback(err, resultMap))
 }
 
+Blockchain.prototype.scriptIdsByLabel = function (label, callback, limit) {
+  limit = limit || 10000
+  let data = []
+
+  this.db.iterator(types.lbIndex, {
+    gte: { label, scId: ZERO64 },
+    lt: { label, scId: MAX64 },
+    limit: limit
+  }, ({ scId }) => {
+    data.push(scId);
+  }, (err) => callback(err, data))
+}
+
 Blockchain.prototype.txoByTxo = function (txId, vout, callback) {
   this.db.get(types.txoIndex, { txId, vout }, callback)
 }
 
-Blockchain.prototype.addLabel = function (scId, label, callback) {
-   //TODO: add label
+Blockchain.prototype.addToLabel = function (scId, label, callback) {
    let atomic = this.db.atomic()
-   atomic.del(types.lbIndex, { scId, label })
-   atomic.put(types.lbIndex, { scId, label }, null)
+   //atomic.del(types.lbIndex, { scId, label })
+   atomic.put(types.lbIndex, { label, scId }, null)
    atomic.write(callback)
 }
 

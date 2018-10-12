@@ -27,6 +27,10 @@ Adapter.prototype.blockIdByTransactionId = function (txId, callback) {
   this.blockchain.blockIdByTransactionId(txId, callback)
 }
 
+Adapter.prototype.scriptIdsByLabel = function (label, callback) {
+  this.blockchain.scriptIdsByLabel(label, callback)
+}
+
 Adapter.prototype.fees = function (n, callback) {
   this.blockchain.fees(n, callback)
 }
@@ -151,6 +155,10 @@ Adapter.prototype.utxosByScriptId = function (scId, height, callback, limit) {
       callback(err, txos.filter(txo => txo !== undefined))
     })
   }, limit)
+}
+
+Adapter.prototype.addToLabel = function (scId, label, callback) {
+  this.blockchain.addToLabel(scId, label, callback)
 }
 
 module.exports = function makeAdapter (db, rpc) {
