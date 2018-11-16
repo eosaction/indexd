@@ -122,18 +122,32 @@ let feeIndex = {
 }
 
 let lbIndex = {
-   keyType: typeforce.compile({
+  keyType: typeforce.compile({
     label: tfHex64,
     scId: tfHex64
-   }),
-   key: vstruct([
-     ['prefix', vstruct.Value(vstruct.UInt8, 0x31)],
-     ['label', Hex64],
-     ['scId', Hex64]
-   ]),
-   valueType: typeforce.Null,
-   value: null
- }
+  }),
+  key: vstruct([
+    ['prefix', vstruct.Value(vstruct.UInt8, 0x31)],
+    ['label', Hex64],
+    ['scId', Hex64]
+  ]),
+  valueType: typeforce.Null,
+  value: null
+}
+
+let xkIndex = {
+  keyType: typeforce.compile({
+    xpubkey: tfHex64,
+    scId: tfHex64
+  }),
+  key: vstruct([
+    ['prefix', vstruct.Value(vstruct.UInt8, 0x32)],
+    ['xpubkey', Hex64],
+    ['scId', Hex64]
+  ]),
+  valueType: typeforce.Null,
+  value: null
+}
 
 module.exports = {
   feeIndex,
@@ -142,5 +156,6 @@ module.exports = {
   txIndex,
   txoIndex,
   tip,
-  lbIndex
+  lbIndex,
+  xkIndex
 }

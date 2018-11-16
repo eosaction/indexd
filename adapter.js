@@ -31,6 +31,10 @@ Adapter.prototype.scriptIdsByLabel = function (label, callback) {
   this.blockchain.scriptIdsByLabel(label, callback)
 }
 
+Adapter.prototype.scriptIdsByXpubKey = function (label, callback) {
+  this.blockchain.scriptIdsByXpubKey(label, callback)
+}
+
 Adapter.prototype.fees = function (n, callback) {
   this.blockchain.fees(n, callback)
 }
@@ -163,6 +167,14 @@ Adapter.prototype.addToLabel = function (scId, label, callback) {
 
 Adapter.prototype.delFromLabel = function (scId, label, callback) {
   this.blockchain.delFromLabel(scId, label, callback)
+}
+
+Adapter.prototype.addToXpubKey = function(scId, xpubKey, callback) {
+  this.blockchain.addToXpubKey(scId, xpubKey, callback)
+}
+
+Adapter.prototype.delToXpubKey = function(scId, xpubKey, callback) {
+  this.blockchain.delToXpubKey(scId, xpubKey, callback)
 }
 
 module.exports = function makeAdapter (db, rpc) {
