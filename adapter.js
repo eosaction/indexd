@@ -39,6 +39,14 @@ Adapter.prototype.fees = function (n, callback) {
   this.blockchain.fees(n, callback)
 }
 
+// returns whether (true/false) the script id (SHA256(script)) and xpubkey has even been seen
+Adapter.prototype.seenScriptIdByXpubKey = function (xpubkey, scId, callback) {
+  this.blockchain.seenScriptIdByXpubKey(xpubkey, scId, (err, result) => {
+    if (err) return callback(err)
+    callback(null, result)
+  })
+}
+
 // returns whether (true/false) the script id (SHA256(script)) has even been seen
 Adapter.prototype.seenScriptId = function (scId, callback) {
   this.blockchain.seenScriptId(scId, (err, result) => {

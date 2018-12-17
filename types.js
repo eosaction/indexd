@@ -149,6 +149,20 @@ let xkIndex = {
   value: null
 }
 
+let kxIndex = {
+  keyType: typeforce.compile({
+    scId: tfHex64,
+    xpubkey: tfHex64
+  }),
+  key: vstruct([
+    ['prefix', vstruct.Value(vstruct.UInt8, 0x33)],
+    ['scId', Hex64],
+    ['xpubkey', Hex64]
+  ]),
+  valueType: typeforce.Null,
+  value: null
+}
+
 module.exports = {
   feeIndex,
   scIndex,
@@ -157,5 +171,6 @@ module.exports = {
   txoIndex,
   tip,
   lbIndex,
-  xkIndex
+  xkIndex,
+  kxIndex
 }

@@ -320,6 +320,17 @@ Blockchain.prototype.scriptIdsByXpubKey = function (xpubkey, callback, limit) {
   }, (err) => callback(err, data))
 }
 
+Blockchain.prototype.seenScriptIdByXpubKey = function (xpubkey, scId, callback) {
+  let result = false
+  this.db.iterator(types.kxIndex, {
+    gte: { scId, xpubkey: ZERO64 },
+    lt: { scId, xpubkey: MAX64 },
+    limit: 1
+  }, () => {
+    result = true
+  }, (err) => callback(err, result))
+}
+
 Blockchain.prototype.txoByTxo = function (txId, vout, callback) {
   this.db.get(types.txoIndex, { txId, vout }, callback)
 }
@@ -337,14 +348,18 @@ Blockchain.prototype.delFromLabel = function (scId, label, callback) {
 }
 
 Blockchain.prototype.addToXpubKey = function (scId, xpubkey, callback) {
+  console.log('addToXpubKey')
+  console.log({ xpubkey, scId })
   let atomic = this.db.atomic()
   atomic.put(types.xkIndex, { xpubkey, scId }, null)
+  atomic.put(types.kxIndex, { scId, xpubkey }, null)
   atomic.write(callback)
 }
 
 Blockchain.prototype.delFromXpubKey = function (scId, xpubkey, callback) {
   let atomic = this.db.atomic()
   atomic.del(types.xkIndex, { xpubkey, scId })
+  atomic.del(types.kxIndex, { scId, xpubkey })
   atomic.write(callback)
 }
 
