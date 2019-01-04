@@ -323,8 +323,8 @@ Blockchain.prototype.scriptIdsByXpubKey = function (xpubkey, callback, limit) {
 Blockchain.prototype.seenScriptIdByXpubKey = function (xpubkey, scId, callback) {
   let result = false
   this.db.iterator(types.kxIndex, {
-    gte: { scId, xpubkey: ZERO64 },
-    lt: { scId, xpubkey: MAX64 },
+    gte: { scId, xpubkey: xpubkey },
+    lt: { scId, xpubkey: xpubkey },
     limit: 1
   }, () => {
     result = true
