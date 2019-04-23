@@ -18,7 +18,9 @@ function sha256 (hex) {
 }
 
 function augment (tx) {
-  tx.txBuffer = Buffer.from(tx.hex, 'hex')
+  if(tx.hex){
+    tx.txBuffer = Buffer.from(tx.hex, 'hex')
+  }
   delete tx.hex
   tx.txId = tx.txid
   delete tx.txid
