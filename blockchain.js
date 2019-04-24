@@ -112,8 +112,9 @@ Blockchain.prototype.connect2ndOrder = function (blockId, block, callback) {
         if (err) return next(err)
         let fee = inAccum - outAccum
         let feeRate = Math.floor(fee / vsize)
-
-        feeRates.push(feeRate)
+        if(!isNaN(feeRate)){
+          feeRates.push(feeRate)
+        }
         next()
       })
     })
