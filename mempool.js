@@ -8,6 +8,7 @@ function Mempool (emitter, rpc) {
   this.scripts = {}
   this.spents = {}
   this.txos = {}
+  this.receivedDates = {}
 
   this.statistics = {
     transactions: 0,
@@ -53,6 +54,8 @@ Mempool.prototype.add = function (txId, callback) {
       setTimeout(() => this.emitter.emit('script', scId, txId, txBuffer))
     })
 
+    getOrSetDefault(this.receivedDates, txId, new Date().getTime())
+
     if (!waiting) {
       waiting = true
 
@@ -71,6 +74,7 @@ Mempool.prototype.reset = function (callback) {
   this.scripts = {}
   this.spents = {}
   this.txos = {}
+  this.receivedDates = {}
   this.statistics = {
     transactions: 0,
     inputs: 0,
@@ -137,6 +141,10 @@ Mempool.prototype.txosByScriptId = function (scId) {
 
 Mempool.prototype.txoByTxo = function (txId, vout) {
   return this.txos[`${txId}:${vout}`]
+}
+
+Mempool.prototype.receivedDateByTx = function (txId) {
+  return this.receivedDates[txId] || 0
 }
 
 module.exports = Mempool

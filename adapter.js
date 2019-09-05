@@ -185,6 +185,10 @@ Adapter.prototype.delToXpubKey = function(scId, xpubKey, callback) {
   this.blockchain.delToXpubKey(scId, xpubKey, callback)
 }
 
+Adapter.prototype.receivedDateByTx = function (txId, callback) {
+  callback(null, this.mempool.receivedDateByTx(txId))
+}
+
 module.exports = function makeAdapter (db, rpc) {
   return new Adapter(db, rpc)
 }
