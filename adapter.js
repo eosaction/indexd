@@ -186,7 +186,7 @@ Adapter.prototype.delToXpubKey = function (scId, xpubKey, callback) {
 }
 
 Adapter.prototype.blockExtraInfoByTransactionId = function (txId, callback) {
-  this.blockchain.blockHeightByTransactionId(txId, height => {
+  this.blockchain.blockHeightByTransactionId(txId, (err, height) => {
     if (err) return callback(err)
     const receivedDate = this.mempool.receivedDateByTx(txId);
     callback(null, { height, receivedDate })
