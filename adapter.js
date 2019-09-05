@@ -5,7 +5,7 @@ let parallel = require('run-parallel')
 let Blockchain = require('./blockchain')
 let Mempool = require('./mempool')
 
-function Adapter (db, rpc) {
+function Adapter(db, rpc) {
   this.db = dbwrapper(db)
   this.emitter = new EventEmitter()
   this.emitter.setMaxListeners(Infinity)
@@ -177,18 +177,22 @@ Adapter.prototype.delFromLabel = function (scId, label, callback) {
   this.blockchain.delFromLabel(scId, label, callback)
 }
 
-Adapter.prototype.addToXpubKey = function(scId, xpubKey, callback) {
+Adapter.prototype.addToXpubKey = function (scId, xpubKey, callback) {
   this.blockchain.addToXpubKey(scId, xpubKey, callback)
 }
 
-Adapter.prototype.delToXpubKey = function(scId, xpubKey, callback) {
+Adapter.prototype.delToXpubKey = function (scId, xpubKey, callback) {
   this.blockchain.delToXpubKey(scId, xpubKey, callback)
 }
 
-Adapter.prototype.receivedDateByTx = function (txId, callback) {
-  callback(null, this.mempool.receivedDateByTx(txId))
+Adapter.prototype.blockExtraInfoByTransactionId = function (txId, callback) {
+  this.blockchain.blockHeightByTransactionId(txId, height => {
+    if (err) return callback(err)
+    const receivedDate = this.mempool.receivedDateByTx(txId);
+    callback(null, { height, receivedDate })
+  })
 }
 
-module.exports = function makeAdapter (db, rpc) {
+module.exports = function makeAdapter(db, rpc) {
   return new Adapter(db, rpc)
 }
